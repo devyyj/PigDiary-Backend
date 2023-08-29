@@ -35,7 +35,7 @@ public class Config {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/api/**").authenticated()
+//                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll() // URL 전체 허용이 맨 처음 나오면 에러남
                 )
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -51,6 +51,7 @@ public class Config {
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

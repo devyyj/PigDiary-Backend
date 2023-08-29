@@ -1,5 +1,6 @@
 package com.devyyj.pigdiary.security.filter;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.devyyj.pigdiary.security.util.CookieUtil;
 import com.devyyj.pigdiary.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -29,23 +30,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // todo 쿠키가 아니라 헤더에서 가져와야 함, 현재는 프론트 없이 테스트 중
         String jwt = cookieUtil.getCookie(request.getCookies(), "jwt");
-        String username = jwtUtil.verifyToken(jwt);
+        DecodedJWT decodedJWT = jwtUtil.verifyToken(jwt);
 
-        if (username != null) {
+        if (decodedJWT != null) {
             // 권한 설정 꼭 필요! 하지 않으면 무한 인증 요청
             UsernamePasswordAuthenticationToken authenticationToken
                     = new UsernamePasswordAuthenticationToken(
-                    username
+                    decodedJWT.getSubject()
                     , ""
                     , List.of(new SimpleGrantedAuthority("USER"))
             );
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        } else {
-            String prevUrl = request.getRequestURI();
-            if (!prevUrl.equals("/favicon.ico")) {
-                Cookie prevUrlCookie = cookieUtil.createCookie("prevUrl", prevUrl);
-                response.addCookie(prevUrlCookie);
-            }
         }
 
         filterChain.doFilter(request, response);

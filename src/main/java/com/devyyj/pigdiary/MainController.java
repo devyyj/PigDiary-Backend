@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 public class MainController {
-    @GetMapping("/")
-    public String root(HttpServletRequest request) {
-        log.info(request.getCookies());
-        return "main!";
-    }
+//    @GetMapping("/")
+//    public String root(HttpServletRequest request) {
+//        log.info(request.getCookies());
+//        return "main!";
+//    }
 }

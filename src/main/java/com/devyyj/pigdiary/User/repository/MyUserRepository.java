@@ -1,6 +1,6 @@
-package com.devyyj.pigdiary.security.repository;
+package com.devyyj.pigdiary.User.repository;
 
-import com.devyyj.pigdiary.security.entity.MyUser;
+import com.devyyj.pigdiary.User.entity.MyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

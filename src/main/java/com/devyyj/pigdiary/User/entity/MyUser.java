@@ -1,16 +1,13 @@
-package com.devyyj.pigdiary.security.entity;
+package com.devyyj.pigdiary.User.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class MyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

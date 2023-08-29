@@ -1,5 +1,8 @@
 package com.devyyj.pigdiary.security.handler;
 
+import com.devyyj.pigdiary.User.entity.MyUser;
+import com.devyyj.pigdiary.User.repository.MyUserRepository;
+import com.devyyj.pigdiary.security.dto.MyOauth2UserDto;
 import com.devyyj.pigdiary.security.util.CookieUtil;
 import com.devyyj.pigdiary.security.util.JwtUtil;
 import jakarta.servlet.ServletException;
@@ -13,6 +16,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,15 +24,15 @@ public class MyOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
+    private final MyUserRepository userRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 
-        String username = oauth2User.getName();
-
+        Optional<MyUser> user = userRepository.findBySocialId(oauth2User.getName());
         // JWT 토큰 생성
-        String jwt = jwtUtil.generateToken(username);
+        String jwt = jwtUtil.generateToken(user.orElseThrow());
 
         // JWT 토큰을 클라이언트에게 반환 (예: 응답 헤더에 추가)
         response.addHeader("Authorization", "Bearer " + jwt);
