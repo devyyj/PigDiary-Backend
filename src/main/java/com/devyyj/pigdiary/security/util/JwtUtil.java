@@ -14,14 +14,14 @@ import java.util.Date;
 public class JwtUtil {
     private final String SECRET_KEY = "your-secret-key"; // 실제로는 보안에 강한 랜덤한 키를 사용해야 합니다.
 
-    public String generateToken(MyUser user) {
+    public String generateToken(String id) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + 3600000); // 1시간 유효한 토큰
 
         return JWT.create()
-                .withSubject(String.valueOf(user.getId()))
-                .withClaim("socialId", user.getSocialId())
-                .withClaim("nickName", user.getNickName())
+                .withSubject(id)
+//                .withClaim("socialId", user.getSocialId())
+//                .withClaim("nickName", user.getNickName())
                 .withIssuedAt(now)
                 .withExpiresAt(expiryDate)
                 .sign(Algorithm.HMAC256(SECRET_KEY));

@@ -1,6 +1,7 @@
 package com.devyyj.pigdiary.security.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.devyyj.pigdiary.User.dto.UserRequestDto;
 import com.devyyj.pigdiary.security.util.CookieUtil;
 import com.devyyj.pigdiary.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -28,19 +29,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // todo 쿠키가 아니라 헤더에서 가져와야 함, 현재는 프론트 없이 테스트 중
         String jwt = cookieUtil.getCookie(request.getCookies(), "jwt");
-        DecodedJWT decodedJWT = jwtUtil.verifyToken(jwt);
-
-        if (decodedJWT != null) {
-            // 권한 설정 꼭 필요! 하지 않으면 무한 인증 요청
-            UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(
-                    decodedJWT.getSubject()
-                    , ""
-                    , List.of(new SimpleGrantedAuthority("USER"))
-            );
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        if (jwt != null) {
+            DecodedJWT decodedJWT = jwtUtil.verifyToken(jwt);
+            if (decodedJWT != null) {
+                // 권한 설정 꼭 필요! 하지 않으면 무한 인증 요청
+                UsernamePasswordAuthenticationToken authenticationToken
+                        = new UsernamePasswordAuthenticationToken(
+                        decodedJWT.getSubject()
+                        , ""
+                        , List.of(new SimpleGrantedAuthority("USER"))
+                );
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
         }
 
         filterChain.doFilter(request, response);

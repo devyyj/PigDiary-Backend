@@ -1,5 +1,6 @@
 package com.devyyj.pigdiary.User.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data

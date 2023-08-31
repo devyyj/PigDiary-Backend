@@ -32,14 +32,16 @@ public class MyOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessH
 
         Optional<MyUser> user = userRepository.findBySocialId(oauth2User.getName());
         // JWT 토큰 생성
-        String jwt = jwtUtil.generateToken(user.orElseThrow());
+        String jwt = jwtUtil.generateToken(user.orElseThrow().getId().toString());
 
         // JWT 토큰을 클라이언트에게 반환 (예: 응답 헤더에 추가)
         response.addHeader("Authorization", "Bearer " + jwt);
 
         // todo 프론트 개발 되면 해당 코드 제거, JWT는 헤더로 전송함
-        Cookie jwtCookie = cookieUtil.createCookie("jwt", jwt);
+        Cookie jwtCookie = cookieUtil.createCookie("jwt", jwt, true);
+        Cookie isLogged = cookieUtil.createCookie("isLogged", "true", false);
         response.addCookie(jwtCookie);
+        response.addCookie(isLogged);
 
         // 로그인 성공 후 리다이렉트 또는 추가 작업을 수행할 수 있습니다.
         clearAuthenticationAttributes(request);

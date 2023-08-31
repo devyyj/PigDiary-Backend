@@ -36,11 +36,14 @@ public class Config {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
 //                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll() // URL 전체 허용이 맨 처음 나오면 에러남
+                                .anyRequest().permitAll() // URL 전체 허용이 맨 처음 나오면 에러남
                 )
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(c -> c.successHandler(successHandler)
-                        .failureHandler(failureHandler))
+                        .failureHandler(failureHandler)
+                        .loginPage("/login") // login page disabled
+                )
+                .logout(AbstractHttpConfigurer::disable) // logout page disabled
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -50,7 +53,7 @@ public class Config {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

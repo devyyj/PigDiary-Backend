@@ -5,13 +5,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CookieUtil {
-    public Cookie createCookie(String name, String value) {
-
+    public Cookie createCookie(String name, String value, Boolean isHttpOnly) {
         Cookie jwtCookie = new Cookie(name, value);
         jwtCookie.setPath("/");
-        jwtCookie.setHttpOnly(true);
+        jwtCookie.setHttpOnly(isHttpOnly);
         jwtCookie.setMaxAge(3600); // 토큰 만료 시간 (초)
-
         return jwtCookie;
     }
 
