@@ -1,12 +1,10 @@
 package com.devyyj.pigdiary.security.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.devyyj.pigdiary.User.dto.UserRequestDto;
 import com.devyyj.pigdiary.security.util.CookieUtil;
 import com.devyyj.pigdiary.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

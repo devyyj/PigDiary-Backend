@@ -1,8 +1,7 @@
 package com.devyyj.pigdiary.security.handler;
 
-import com.devyyj.pigdiary.User.entity.MyUser;
-import com.devyyj.pigdiary.User.repository.MyUserRepository;
-import com.devyyj.pigdiary.security.dto.MyOauth2UserDto;
+import com.devyyj.pigdiary.user.entity.MyUser;
+import com.devyyj.pigdiary.user.repository.MyUserRepository;
 import com.devyyj.pigdiary.security.util.CookieUtil;
 import com.devyyj.pigdiary.security.util.JwtUtil;
 import jakarta.servlet.ServletException;

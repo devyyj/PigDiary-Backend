@@ -1,6 +1,5 @@
 package com.devyyj.pigdiary.security.dto;
 
-import com.devyyj.pigdiary.User.entity.MyUser;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

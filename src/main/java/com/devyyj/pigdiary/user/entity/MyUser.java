@@ -1,4 +1,4 @@
-package com.devyyj.pigdiary.User.entity;
+package com.devyyj.pigdiary.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.devyyj.pigdiary.User.dto;
+package com.devyyj.pigdiary.user.dto;
 
 import lombok.*;
 

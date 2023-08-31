@@ -3,9 +3,6 @@ package com.devyyj.pigdiary.security.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.devyyj.pigdiary.User.entity.MyUser;
-import com.devyyj.pigdiary.security.dto.MyOauth2UserDto;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

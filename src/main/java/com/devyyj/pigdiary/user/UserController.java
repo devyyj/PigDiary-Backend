@@ -1,19 +1,16 @@
-package com.devyyj.pigdiary.User;
+package com.devyyj.pigdiary.user;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.devyyj.pigdiary.User.dto.UserRequestDto;
-import com.devyyj.pigdiary.User.dto.UserResponseDto;
-import com.devyyj.pigdiary.User.entity.MyUser;
-import com.devyyj.pigdiary.User.repository.MyUserRepository;
-import com.devyyj.pigdiary.security.util.JwtUtil;
+import com.devyyj.pigdiary.login.service.LoginServiceImpl;
+import com.devyyj.pigdiary.user.dto.UserRequestDto;
+import com.devyyj.pigdiary.user.dto.UserResponseDto;
+import com.devyyj.pigdiary.user.entity.MyUser;
+import com.devyyj.pigdiary.user.repository.MyUserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Optional;
 
@@ -21,7 +18,7 @@ import java.util.Optional;
 @RestController
 public class UserController {
     private final MyUserRepository userRepository;
-    private final JwtUtil jwtUtil;
+    private final LoginServiceImpl loginService;
 
     @GetMapping("/user")
     public ResponseEntity<UserResponseDto> getUserInfo(Authentication authentication) {
@@ -36,7 +33,7 @@ public class UserController {
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/user")
+    @PutMapping("/user")
     public ResponseEntity<Void> setUserInfo(Authentication authentication, @RequestBody UserRequestDto userRequestDto) {
         Optional<MyUser> user = userRepository.findById(Long.valueOf(authentication.getPrincipal().toString()));
         user.ifPresent(myUser -> {
@@ -47,9 +44,10 @@ public class UserController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<Void>  deleteUserInfo(Authentication authentication) {
+    public ResponseEntity<Void>  deleteUserInfo(Authentication authentication, HttpServletResponse response) {
         Optional<MyUser> user = userRepository.findById(Long.valueOf(authentication.getPrincipal().toString()));
         user.ifPresent(userRepository::delete);
+        loginService.clearCookie(response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -2,9 +2,8 @@ package com.devyyj.pigdiary.security.service;
 
 import com.devyyj.pigdiary.common.entity.CommonCode;
 import com.devyyj.pigdiary.common.repository.CommonCodeRepository;
-import com.devyyj.pigdiary.User.entity.MyUser;
-import com.devyyj.pigdiary.User.repository.MyUserRepository;
-import com.devyyj.pigdiary.security.dto.MyOauth2UserDto;
+import com.devyyj.pigdiary.user.entity.MyUser;
+import com.devyyj.pigdiary.user.repository.MyUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
