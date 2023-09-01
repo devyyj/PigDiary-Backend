@@ -2,14 +2,12 @@ package com.devyyj.pigdiary.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class CommonCode {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class CommonCode extends BaseEntity{
     @Column(nullable = false)
     private String category;
 

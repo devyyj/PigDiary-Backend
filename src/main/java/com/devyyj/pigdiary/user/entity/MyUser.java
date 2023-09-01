@@ -1,17 +1,17 @@
 package com.devyyj.pigdiary.user.entity;
 
+import com.devyyj.pigdiary.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class MyUser extends BaseEntity {
     @Column(nullable = false)
     private String nickName;
     @Column(nullable = false)
