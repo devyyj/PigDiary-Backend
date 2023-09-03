@@ -17,11 +17,11 @@ import lombok.experimental.SuperBuilder;
  * 엔티티 객체를 DTO로 변환하거나 그 반대로 변환하는 과정이 필요하는 점이다.
  */
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
-public class FreeBoardDto extends BaseDto {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FreeBoardRequestDto {
     private String title;
     private String content;
-    private String user;
 }

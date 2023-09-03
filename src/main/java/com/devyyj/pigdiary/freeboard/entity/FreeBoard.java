@@ -19,6 +19,6 @@ public class FreeBoard extends BaseEntity {
     @Column(length = 1500, nullable = false)
     private String content;
 
-    @Column(length = 50, nullable = false)
-    private String user;
+    @Column(nullable = false)
+    private Long userId;
 }
