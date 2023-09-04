@@ -36,6 +36,7 @@ public interface FreeBoardService {
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .nickName(entity.getUser().getNickName())
+                .userId(entity.getUser().getId())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .deletedAt(entity.getDeletedAt())

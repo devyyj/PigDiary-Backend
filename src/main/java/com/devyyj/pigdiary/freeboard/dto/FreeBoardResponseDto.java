@@ -24,4 +24,5 @@ public class FreeBoardResponseDto extends BaseDto {
     private String title;
     private String content;
     private String nickName;
+    private Long userId;
 }
