@@ -24,6 +24,15 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     private final FreeBoardRepository freeBoardRepository; // 반드시 final로 선언
 
     @Override
+    public PageResultDto<FreeBoardResponseDto, Object[]> getList(PageRequestDto pageRequestDTO) {
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
+        Page<Object[]> result = freeBoardRepository.findFreeBoardsWithNickName(pageable);
+//        Function<FreeBoard, FreeBoardDTO> fn = (entity -> entityToDto(entity));
+        Function<Object[], FreeBoardResponseDto> fn = (this::entityArrayToDto);
+        return new PageResultDto<>(result, fn);
+    }
+
+    @Override
     public Long createPost(FreeBoardRequestDto boardRequestDto, Long userId) {
         FreeBoard entity = dtoToEntity(boardRequestDto);
         entity.setUserId(userId);
@@ -31,14 +40,6 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         return entity.getId();
     }
 
-    @Override
-    public PageResultDto<FreeBoardResponseDto, FreeBoard> getList(PageRequestDto pageRequestDTO) {
-        Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
-        Page<FreeBoard> result = freeBoardRepository.findAll(pageable);
-//        Function<FreeBoard, FreeBoardDTO> fn = (entity -> entityToDto(entity));
-        Function<FreeBoard, FreeBoardResponseDto> fn = (this::entityToDto);
-        return new PageResultDto<>(result, fn);
-    }
 
     @Override
     public FreeBoardResponseDto getPost(Long postNumber) {
@@ -49,13 +50,14 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     }
 
     @Override
-    public void update(Long postNumber, FreeBoardRequestDto boardRequestDto) {
-        Optional<FreeBoard> result = freeBoardRepository.findById(postNumber);
+    public void update(Long userId, FreeBoardRequestDto boardRequestDto) throws Exception {
+        Optional<FreeBoard> result = freeBoardRepository.findById(boardRequestDto.getPostId());
 
         if (result.isPresent()) {
             FreeBoard freeBoard = result.get();
-
-            freeBoard.setUserId(boardRequestDto.get());
+            if(!freeBoard.getUserId().equals(userId)) {
+                throw new Exception("게시글을 수정할 권한이 없습니다.");
+            }
             freeBoard.setTitle(boardRequestDto.getTitle());
             freeBoard.setContent(boardRequestDto.getContent());
 

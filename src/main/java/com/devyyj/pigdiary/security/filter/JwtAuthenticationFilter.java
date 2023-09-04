@@ -39,6 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         , List.of(new SimpleGrantedAuthority("USER"))
                 );
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            } else {
+                response.sendRedirect("/");
             }
         }
 

@@ -40,9 +40,9 @@ public class FreeBoardController {
 
     // 게시글 수정
     @PutMapping("/{postNumber}")
-    public ResponseEntity<String> updatePost(@PathVariable Long postNumber, FreeBoardRequestDto boardRequestDto) {
-        freeBoardService.update(postNumber, boardRequestDto);
-        return new ResponseEntity<>(postNumber + " post updated.", HttpStatus.OK);
+    public ResponseEntity<String> updatePost(Authentication authentication, FreeBoardRequestDto boardRequestDto) throws Exception {
+        freeBoardService.update(Long.valueOf(authentication.getPrincipal().toString()), boardRequestDto);
+        return new ResponseEntity<>(boardRequestDto.getPostId() + " post updated.", HttpStatus.OK);
     }
 
     // 게시글 삭제

@@ -8,7 +8,7 @@ import com.devyyj.pigdiary.freeboard.entity.FreeBoard;
 
 public interface FreeBoardService {
     // 게시글 목록
-    PageResultDto<FreeBoardResponseDto, FreeBoard> getList(PageRequestDto pageRequestDTO);
+    PageResultDto<FreeBoardResponseDto, Object[]> getList(PageRequestDto pageRequestDTO);
 
     // 게시글 생성
     Long createPost(FreeBoardRequestDto boardRequestDto, Long userId);
@@ -17,7 +17,7 @@ public interface FreeBoardService {
     FreeBoardResponseDto getPost(Long postNumber);
 
     // 게시글 수정
-    void update(Long postNumber, FreeBoardRequestDto boardRequestDto);
+    void update(Long userId, FreeBoardRequestDto boardRequestDto) throws Exception;
 
     // 게시글 삭제
     void delete(Long postNumber);
@@ -25,7 +25,6 @@ public interface FreeBoardService {
     default FreeBoard dtoToEntity(FreeBoardRequestDto dto) {
         return FreeBoard
                 .builder()
-                .userId()
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .build();
@@ -36,7 +35,7 @@ public interface FreeBoardService {
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
-                .nickName(entity.getNickName())
+                .nickName(entity.getUser().getNickName())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .deletedAt(entity.getDeletedAt())
@@ -44,5 +43,20 @@ public interface FreeBoardService {
                 .build();
     }
 
+    default FreeBoardResponseDto entityArrayToDto(Object[] entityArray) {
+        FreeBoard freeBoard = (FreeBoard) entityArray[0]; // FreeBoard 엔티티는 배열의 첫 번째 요소
+        String nickName = (String) entityArray[1]; // nickName은 배열의 두 번째 요소
 
+        // FreeBoardResponseDto를 생성하고 반환
+        return FreeBoardResponseDto.builder()
+                .id(freeBoard.getId())
+                .title(freeBoard.getTitle())
+                .content(freeBoard.getContent())
+                .nickName(nickName)
+                .createdAt(freeBoard.getCreatedAt())
+                .updatedAt(freeBoard.getUpdatedAt())
+                .deletedAt(freeBoard.getDeletedAt())
+                .deleted(freeBoard.isDeleted())
+                .build();
+    }
 }
