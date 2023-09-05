@@ -6,9 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
 public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
-    @Query("SELECT f, u.nickName FROM FreeBoard f JOIN MyUser u ON f.userId = u.id")
-    Page<Object[]> findFreeBoardsWithNickName(Pageable pageable);
+    @Query("SELECT f, u.nickName FROM FreeBoard f JOIN f.user u")
+    Page<Object[]> findAllData(Pageable pageable);
 }

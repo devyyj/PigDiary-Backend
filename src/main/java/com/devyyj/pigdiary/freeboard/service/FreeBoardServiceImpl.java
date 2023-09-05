@@ -1,5 +1,6 @@
 package com.devyyj.pigdiary.freeboard.service;
 
+import com.devyyj.pigdiary.common.service.CommonServiceImpl;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
 import com.devyyj.pigdiary.freeboard.dto.PageRequestDto;
@@ -22,11 +23,12 @@ import java.util.function.Function;
 public class FreeBoardServiceImpl implements FreeBoardService {
 
     private final FreeBoardRepository freeBoardRepository; // 반드시 final로 선언
+    private final CommonServiceImpl commonService;
 
     @Override
     public PageResultDto<FreeBoardResponseDto, Object[]> getList(PageRequestDto pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
-        Page<Object[]> result = freeBoardRepository.findFreeBoardsWithNickName(pageable);
+        Page<Object[]> result = freeBoardRepository.findAllData(pageable);
 //        Function<FreeBoard, FreeBoardDTO> fn = (entity -> entityToDto(entity));
         Function<Object[], FreeBoardResponseDto> fn = (this::entityArrayToDto);
         return new PageResultDto<>(result, fn);
@@ -51,22 +53,20 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     @Override
     public void update(Long userId, FreeBoardRequestDto boardRequestDto) throws Exception {
-        Optional<FreeBoard> result = freeBoardRepository.findById(boardRequestDto.getPostId());
-
-        if (result.isPresent()) {
-            FreeBoard freeBoard = result.get();
-            if(!freeBoard.getUserId().equals(userId)) {
-                throw new Exception("게시글을 수정할 권한이 없습니다.");
-            }
+        Optional<FreeBoard> post = freeBoardRepository.findById(boardRequestDto.getPostId());
+        if (post.isPresent()) {
+            FreeBoard freeBoard = post.get();
+            commonService.checkDataOwner(userId, freeBoard.getUserId());
             freeBoard.setTitle(boardRequestDto.getTitle());
             freeBoard.setContent(boardRequestDto.getContent());
-
             freeBoardRepository.save(freeBoard);
         }
     }
 
     @Override
-    public void delete(Long postNumber) {
-        freeBoardRepository.deleteById(postNumber);
+    public void delete(Long userId, Long postNumber) {
+        Optional<FreeBoard> post = freeBoardRepository.findById(postNumber);
+        commonService.checkDataOwner(userId, post.orElseThrow().getUserId());
+        freeBoardRepository.deleteById(post.orElseThrow().getId());
     }
 }

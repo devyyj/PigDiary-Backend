@@ -23,6 +23,10 @@ public class FreeBoard extends BaseEntity {
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id"
+            , referencedColumnName = "id"
+            , insertable = false
+            , updatable = false
+            , foreignKey = @ForeignKey(name = "none"))
     private MyUser user;
 }

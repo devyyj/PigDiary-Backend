@@ -19,36 +19,31 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FreeBoardController {
     private final FreeBoardServiceImpl freeBoardService;
-
     // 게시글 목록 조회
     @GetMapping({"", "/"})
     public ResponseEntity<PageResultDto> list(PageRequestDto pageRequestDTO) {
         return new ResponseEntity<>(freeBoardService.getList(pageRequestDTO), HttpStatus.OK);
     }
-
-    // 게시글 생성
-    @PostMapping({"", "/"})
-    public ResponseEntity<Long> createPost(Authentication authentication, FreeBoardRequestDto boardRequestDto) {
-        return new ResponseEntity<>(freeBoardService.createPost(boardRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
-    }
-
     // 게시글 조회
     @GetMapping("/{postNumber}")
     public ResponseEntity<FreeBoardResponseDto> readPost(@PathVariable Long postNumber) {
         return new ResponseEntity<>(freeBoardService.getPost(postNumber), HttpStatus.OK);
     }
-
+    // 게시글 생성
+    @PostMapping({"", "/"})
+    public ResponseEntity<Long> createPost(Authentication authentication, FreeBoardRequestDto boardRequestDto) {
+        return new ResponseEntity<>(freeBoardService.createPost(boardRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
+    }
     // 게시글 수정
     @PutMapping("/{postNumber}")
     public ResponseEntity<String> updatePost(Authentication authentication, FreeBoardRequestDto boardRequestDto) throws Exception {
         freeBoardService.update(Long.valueOf(authentication.getPrincipal().toString()), boardRequestDto);
         return new ResponseEntity<>(boardRequestDto.getPostId() + " post updated.", HttpStatus.OK);
     }
-
     // 게시글 삭제
     @DeleteMapping("/{postNumber}")
-    public ResponseEntity<String> deletePost(@PathVariable Long postNumber) {
-        freeBoardService.delete(postNumber);
+    public ResponseEntity<String> deletePost(Authentication authentication, @PathVariable Long postNumber) {
+        freeBoardService.delete(Long.valueOf(authentication.getPrincipal().toString()), postNumber);
         return new ResponseEntity<>(postNumber + " post deleted.", HttpStatus.OK);
     }
 }

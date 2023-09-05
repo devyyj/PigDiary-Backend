@@ -12,10 +12,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyUser extends BaseEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String nickName;
+
     @Column(nullable = false)
     private String socialId;
+
     @Column(nullable = false)
     private String socialType;
 }

@@ -20,7 +20,7 @@ public interface FreeBoardService {
     void update(Long userId, FreeBoardRequestDto boardRequestDto) throws Exception;
 
     // 게시글 삭제
-    void delete(Long postNumber);
+    void delete(Long userId, Long postNumber);
 
     default FreeBoard dtoToEntity(FreeBoardRequestDto dto) {
         return FreeBoard
@@ -54,6 +54,7 @@ public interface FreeBoardService {
                 .title(freeBoard.getTitle())
                 .content(freeBoard.getContent())
                 .nickName(nickName)
+                .userId(freeBoard.getUserId())
                 .createdAt(freeBoard.getCreatedAt())
                 .updatedAt(freeBoard.getUpdatedAt())
                 .deletedAt(freeBoard.getDeletedAt())
