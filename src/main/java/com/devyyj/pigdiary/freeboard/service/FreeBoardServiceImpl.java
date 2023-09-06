@@ -66,7 +66,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     @Override
     public void delete(Long userId, Long postNumber) {
         Optional<FreeBoard> post = freeBoardRepository.findById(postNumber);
-        commonService.checkDataOwner(userId, post.orElseThrow().getUserId());
-        freeBoardRepository.deleteById(post.orElseThrow().getId());
+        post.ifPresent(x -> {
+            commonService.checkDataOwner(userId, x.getUserId());
+            x.markAsDeleted();
+            freeBoardRepository.save(x);
+        });
     }
 }

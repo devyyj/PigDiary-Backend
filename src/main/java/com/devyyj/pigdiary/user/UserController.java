@@ -44,10 +44,13 @@ public class UserController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<Void>  deleteUserInfo(Authentication authentication, HttpServletResponse response) {
+    public ResponseEntity<Void> deleteUserInfo(Authentication authentication, HttpServletResponse response) {
         Optional<MyUser> user = userRepository.findById(Long.valueOf(authentication.getPrincipal().toString()));
-        user.ifPresent(userRepository::delete);
-        loginService.clearCookie(response);
+        user.ifPresent(x -> {
+            x.markAsDeleted();
+            userRepository.save(x);
+            loginService.clearCookie(response);
+        });
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
