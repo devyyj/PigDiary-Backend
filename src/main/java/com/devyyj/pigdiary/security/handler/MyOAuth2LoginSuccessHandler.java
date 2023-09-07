@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MyOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${front-url}")
+    @Value("${front.url}")
     private String frontUrl;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;

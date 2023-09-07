@@ -1,16 +1,21 @@
 package com.devyyj.pigdiary.security.util;
 
 import jakarta.servlet.http.Cookie;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CookieUtil {
+    @Value("${front.domain}")
+    private String frontDomain;
+
     public Cookie createCookie(String name, String value, Boolean isHttpOnly) {
-        Cookie jwtCookie = new Cookie(name, value);
-        jwtCookie.setPath("/");
-        jwtCookie.setHttpOnly(isHttpOnly);
-        jwtCookie.setMaxAge(3600); // 토큰 만료 시간 (초)
-        return jwtCookie;
+        Cookie cookie = new Cookie(name, value);
+        cookie.setDomain(frontDomain);
+        cookie.setPath("/");
+        cookie.setHttpOnly(isHttpOnly);
+        cookie.setMaxAge(3600); // 토큰 만료 시간 (초)
+        return cookie;
     }
 
     public String getCookie(Cookie[] cookies, String name) {
