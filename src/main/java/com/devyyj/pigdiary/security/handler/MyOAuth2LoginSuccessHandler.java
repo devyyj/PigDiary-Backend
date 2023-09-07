@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -21,9 +22,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MyOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Value("${front-url}")
+    private String frontUrl;
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final MyUserRepository userRepository;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -46,7 +50,7 @@ public class MyOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessH
         clearAuthenticationAttributes(request);
         String prevUrl = cookieUtil.getCookie(request.getCookies(), "prevUrl");
         // todo 프론트엔드 주소 환경변수로 빼기
-        super.setDefaultTargetUrl("http://localhost:3000/" + (prevUrl == null ? "" : prevUrl));
+        super.setDefaultTargetUrl(frontUrl + (prevUrl == null ? "" : prevUrl));
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }
