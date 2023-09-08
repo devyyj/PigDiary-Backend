@@ -2,8 +2,8 @@ package com.devyyj.pigdiary.freeboard.controller;
 
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
-import com.devyyj.pigdiary.freeboard.dto.PageRequestDto;
-import com.devyyj.pigdiary.freeboard.dto.PageResultDto;
+import com.devyyj.pigdiary.common.dto.PageRequestDto;
+import com.devyyj.pigdiary.common.dto.PageResultDto;
 import com.devyyj.pigdiary.freeboard.service.FreeBoardServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

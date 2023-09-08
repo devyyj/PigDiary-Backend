@@ -1,4 +1,4 @@
-package com.devyyj.pigdiary.freeboard.dto;
+package com.devyyj.pigdiary.common.dto;
 
 import lombok.Data;
 import org.springframework.data.domain.Page;
