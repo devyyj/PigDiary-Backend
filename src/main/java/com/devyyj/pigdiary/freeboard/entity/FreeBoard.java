@@ -19,14 +19,8 @@ public class FreeBoard extends BaseEntity {
     @Column(length = 1500, nullable = false)
     private String content;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id"
-            , referencedColumnName = "id"
-            , insertable = false
-            , updatable = false
             , foreignKey = @ForeignKey(name = "none"))
     private MyUser user;
 }

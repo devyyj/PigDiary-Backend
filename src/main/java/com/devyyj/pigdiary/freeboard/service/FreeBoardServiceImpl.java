@@ -7,6 +7,7 @@ import com.devyyj.pigdiary.common.dto.PageRequestDto;
 import com.devyyj.pigdiary.common.dto.PageResultDto;
 import com.devyyj.pigdiary.freeboard.entity.FreeBoard;
 import com.devyyj.pigdiary.freeboard.repository.FreeBoardRepository;
+import com.devyyj.pigdiary.user.entity.MyUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -26,18 +27,18 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     private final CommonServiceImpl commonService;
 
     @Override
-    public PageResultDto<FreeBoardResponseDto, Object[]> getList(PageRequestDto pageRequestDTO) {
+    public PageResultDto<FreeBoardResponseDto, FreeBoard> getList(PageRequestDto pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
-        Page<Object[]> result = freeBoardRepository.findAllData(pageable);
+        Page<FreeBoard> result = freeBoardRepository.findAllData(pageable);
 //        Function<FreeBoard, FreeBoardDTO> fn = (entity -> entityToDto(entity));
-        Function<Object[], FreeBoardResponseDto> fn = (this::entityArrayToDto);
+        Function<FreeBoard, FreeBoardResponseDto> fn = (this::entityToDto);
         return new PageResultDto<>(result, fn);
     }
 
     @Override
     public Long createPost(FreeBoardRequestDto boardRequestDto, Long userId) {
         FreeBoard entity = dtoToEntity(boardRequestDto);
-        entity.setUserId(userId);
+        entity.setUser(MyUser.builder().id(userId).build());
         freeBoardRepository.save(entity);
         return entity.getId();
     }
@@ -56,7 +57,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         Optional<FreeBoard> post = freeBoardRepository.findById(boardRequestDto.getPostId());
         if (post.isPresent()) {
             FreeBoard freeBoard = post.get();
-            commonService.checkDataOwner(userId, freeBoard.getUserId());
+            commonService.checkDataOwner(userId, freeBoard.getUser().getId());
             freeBoard.setTitle(boardRequestDto.getTitle());
             freeBoard.setContent(boardRequestDto.getContent());
             freeBoardRepository.save(freeBoard);
@@ -67,7 +68,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     public void delete(Long userId, Long postNumber) {
         Optional<FreeBoard> post = freeBoardRepository.findById(postNumber);
         post.ifPresent(x -> {
-            commonService.checkDataOwner(userId, x.getUserId());
+            commonService.checkDataOwner(userId, x.getUser().getId());
             x.markAsDeleted();
             freeBoardRepository.save(x);
         });
