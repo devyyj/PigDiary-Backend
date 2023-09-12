@@ -1,0 +1,52 @@
+package com.devyyj.pigdiary.diary;
+
+import com.devyyj.pigdiary.common.dto.PageRequestDto;
+import com.devyyj.pigdiary.common.dto.PageResultDto;
+import com.devyyj.pigdiary.diary.dto.DiaryRequestDto;
+import com.devyyj.pigdiary.diary.dto.DiaryResponseDto;
+import com.devyyj.pigdiary.diary.entity.Diary;
+import com.devyyj.pigdiary.diary.service.DiaryServiceImpl;
+import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
+import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/diary")
+@Log4j2
+@RequiredArgsConstructor
+public class DiaryController {
+    private final DiaryServiceImpl diaryService;
+    // 게시글 목록 조회
+    @GetMapping({"", "/"})
+    public ResponseEntity<PageResultDto> list(PageRequestDto pageRequestDTO) {
+        return new ResponseEntity<>(diaryService.getList(pageRequestDTO), HttpStatus.OK);
+    }
+    // 게시글 조회
+    @GetMapping("/{postNumber}")
+    public ResponseEntity<DiaryResponseDto> readPost(@PathVariable Long postNumber) {
+        return new ResponseEntity<>(diaryService.read(postNumber), HttpStatus.OK);
+    }
+    // 게시글 생성
+    @PostMapping({"", "/"})
+    public ResponseEntity<Long> createPost(Authentication authentication, DiaryRequestDto diaryRequestDto) {
+        return new ResponseEntity<>(diaryService.create(diaryRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
+    }
+    // 게시글 수정
+    @PutMapping("/{postNumber}")
+    public ResponseEntity<String> updatePost(Authentication authentication, DiaryRequestDto diaryRequestDto) throws Exception {
+        diaryService.update(Long.valueOf(authentication.getPrincipal().toString()), diaryRequestDto);
+        return new ResponseEntity<>(diaryRequestDto.getDiaryId() + " post updated.", HttpStatus.OK);
+    }
+    // 게시글 삭제
+    @DeleteMapping("/{postNumber}")
+    public ResponseEntity<String> deletePost(Authentication authentication, @PathVariable Long postNumber) {
+        diaryService.delete(Long.valueOf(authentication.getPrincipal().toString()), postNumber);
+        return new ResponseEntity<>(postNumber + " post deleted.", HttpStatus.OK);
+    }
+}

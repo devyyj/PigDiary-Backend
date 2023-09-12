@@ -1,4 +1,4 @@
-package com.devyyj.pigdiary.freeboard.controller;
+package com.devyyj.pigdiary.freeboard;
 
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
@@ -27,12 +27,12 @@ public class FreeBoardController {
     // 게시글 조회
     @GetMapping("/{postNumber}")
     public ResponseEntity<FreeBoardResponseDto> readPost(@PathVariable Long postNumber) {
-        return new ResponseEntity<>(freeBoardService.getPost(postNumber), HttpStatus.OK);
+        return new ResponseEntity<>(freeBoardService.read(postNumber), HttpStatus.OK);
     }
     // 게시글 생성
     @PostMapping({"", "/"})
     public ResponseEntity<Long> createPost(Authentication authentication, FreeBoardRequestDto boardRequestDto) {
-        return new ResponseEntity<>(freeBoardService.createPost(boardRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
+        return new ResponseEntity<>(freeBoardService.create(boardRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
     }
     // 게시글 수정
     @PutMapping("/{postNumber}")

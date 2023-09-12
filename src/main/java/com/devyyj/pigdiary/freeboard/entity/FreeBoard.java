@@ -5,6 +5,7 @@ import com.devyyj.pigdiary.user.entity.MyUser;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Where;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -12,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @RequiredArgsConstructor
 @SuperBuilder
 @AllArgsConstructor
+@Where(clause = "deleted = false")
 public class FreeBoard extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String title;
@@ -19,8 +21,7 @@ public class FreeBoard extends BaseEntity {
     @Column(length = 1500, nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id"
-            , foreignKey = @ForeignKey(name = "none"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "none"))
     private MyUser user;
 }

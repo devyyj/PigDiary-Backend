@@ -4,6 +4,7 @@ import com.devyyj.pigdiary.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Where;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

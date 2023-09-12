@@ -28,7 +28,7 @@ public class MyDefaultOAuth2UserService extends DefaultOAuth2UserService {
         String socialId = oAuth2User.getName();
 
         // 회원 아니면 회원 가입
-        if (userRepository.findBySocialId(socialId).isEmpty()) {
+        if (userRepository.findBySocialIdAndDeleted(socialId, false).isEmpty()) {
             String nickName = makeNickName();
             MyUser user = userRepository.save(MyUser.builder()
                     .nickName(nickName)

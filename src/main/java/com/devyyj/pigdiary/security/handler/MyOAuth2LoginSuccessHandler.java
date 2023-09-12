@@ -35,7 +35,7 @@ public class MyOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessH
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 
-        Optional<MyUser> user = userRepository.findBySocialId(oauth2User.getName());
+        Optional<MyUser> user = userRepository.findBySocialIdAndDeleted(oauth2User.getName(), false);
         // JWT 토큰 생성
         String jwt = jwtUtil.generateToken(user.orElseThrow().getId().toString());
 

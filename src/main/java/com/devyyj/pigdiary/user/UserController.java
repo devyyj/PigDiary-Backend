@@ -47,7 +47,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUserInfo(Authentication authentication, HttpServletResponse response) {
         Optional<MyUser> user = userRepository.findById(Long.valueOf(authentication.getPrincipal().toString()));
         user.ifPresent(x -> {
-            x.markAsDeleted();
+            x.setDeleted();
             userRepository.save(x);
             loginService.clearCookie(response);
         });

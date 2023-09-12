@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
  */
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Setter
 @SuperBuilder
 public class FreeBoardResponseDto extends BaseDto {
     private String title;
