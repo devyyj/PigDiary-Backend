@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
  * 화면에서 필요한 데이터
  */
 @Data
-public class PageResultDto<DTO, EN> {
+public class PageResponseDto<DTO, EN> {
     private List<DTO> dtoList;
 
     // 총 페이지 번호
@@ -34,7 +34,7 @@ public class PageResultDto<DTO, EN> {
     /**
      * Page<Entity> result를 DTO 리스트로 변환
      */
-    public PageResultDto(Page<EN> result, Function<EN, DTO> fn) {
+    public PageResponseDto(Page<EN> result, Function<EN, DTO> fn) {
         // 이거 좀 어려운데?? 이해가 잘 안된다.
         dtoList = result.stream().map(fn).collect(Collectors.toList());
 

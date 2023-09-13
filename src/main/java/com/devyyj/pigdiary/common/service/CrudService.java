@@ -1,11 +1,11 @@
 package com.devyyj.pigdiary.common.service;
 
 import com.devyyj.pigdiary.common.dto.PageRequestDto;
-import com.devyyj.pigdiary.common.dto.PageResultDto;
+import com.devyyj.pigdiary.common.dto.PageResponseDto;
 
 public interface CrudService<RequestDto, ResponseDto, Entity> {
     // 목록
-    PageResultDto<ResponseDto, Entity> getList(PageRequestDto pageRequestDTO);
+    PageResponseDto<ResponseDto, Entity> getList(PageRequestDto pageRequestDTO);
 
     // 생성
     Long create(RequestDto requestDto, Long userId);

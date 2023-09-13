@@ -3,7 +3,7 @@ package com.devyyj.pigdiary.freeboard;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
 import com.devyyj.pigdiary.common.dto.PageRequestDto;
-import com.devyyj.pigdiary.common.dto.PageResultDto;
+import com.devyyj.pigdiary.common.dto.PageResponseDto;
 import com.devyyj.pigdiary.freeboard.service.FreeBoardServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +21,7 @@ public class FreeBoardController {
     private final FreeBoardServiceImpl freeBoardService;
     // 게시글 목록 조회
     @GetMapping({"", "/"})
-    public ResponseEntity<PageResultDto> list(PageRequestDto pageRequestDTO) {
+    public ResponseEntity<PageResponseDto> list(PageRequestDto pageRequestDTO) {
         return new ResponseEntity<>(freeBoardService.getList(pageRequestDTO), HttpStatus.OK);
     }
     // 게시글 조회

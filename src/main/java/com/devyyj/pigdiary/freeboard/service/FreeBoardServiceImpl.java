@@ -5,7 +5,7 @@ import com.devyyj.pigdiary.common.service.CrudService;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
 import com.devyyj.pigdiary.common.dto.PageRequestDto;
-import com.devyyj.pigdiary.common.dto.PageResultDto;
+import com.devyyj.pigdiary.common.dto.PageResponseDto;
 import com.devyyj.pigdiary.freeboard.entity.FreeBoard;
 import com.devyyj.pigdiary.freeboard.repository.FreeBoardRepository;
 import com.devyyj.pigdiary.user.entity.MyUser;
@@ -28,11 +28,11 @@ public class FreeBoardServiceImpl implements CrudService<FreeBoardRequestDto, Fr
     private final CommonServiceImpl commonService;
 
     @Override
-    public PageResultDto<FreeBoardResponseDto, FreeBoard> getList(PageRequestDto pageRequestDTO) {
+    public PageResponseDto<FreeBoardResponseDto, FreeBoard> getList(PageRequestDto pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
         Page<FreeBoard> result = freeBoardRepository.findAll(pageable);
         Function<FreeBoard, FreeBoardResponseDto> fn = (this::entityToDto);
-        return new PageResultDto<>(result, fn);
+        return new PageResponseDto<>(result, fn);
     }
 
     @Override

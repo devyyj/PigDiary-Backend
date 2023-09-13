@@ -1,15 +1,12 @@
 package com.devyyj.pigdiary.diary.service;
 
 import com.devyyj.pigdiary.common.dto.PageRequestDto;
-import com.devyyj.pigdiary.common.dto.PageResultDto;
-import com.devyyj.pigdiary.common.entity.CommonCode;
+import com.devyyj.pigdiary.common.dto.PageResponseDto;
 import com.devyyj.pigdiary.common.service.CrudService;
 import com.devyyj.pigdiary.diary.dto.DiaryRequestDto;
 import com.devyyj.pigdiary.diary.dto.DiaryResponseDto;
 import com.devyyj.pigdiary.diary.entity.Diary;
 import com.devyyj.pigdiary.diary.repository.DiaryRepository;
-import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
-import com.devyyj.pigdiary.freeboard.entity.FreeBoard;
 import com.devyyj.pigdiary.user.entity.MyUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,11 +26,11 @@ public class DiaryServiceImpl implements CrudService<DiaryRequestDto, DiaryRespo
     //todo 동작전 사용자 검증 로직 추가
 
     @Override
-    public PageResultDto<DiaryResponseDto, Diary> getList(PageRequestDto pageRequestDTO) {
+    public PageResponseDto<DiaryResponseDto, Diary> getList(PageRequestDto pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
         Page<Diary> result = diaryRepository.findAll(pageable);
         Function<Diary, DiaryResponseDto> fn = (this::entityToDto);
-        return new PageResultDto<>(result, fn);
+        return new PageResponseDto<>(result, fn);
     }
 
     @Override
@@ -84,7 +81,7 @@ public class DiaryServiceImpl implements CrudService<DiaryRequestDto, DiaryRespo
         return DiaryResponseDto.builder()
                 .foodName(diary.getFoodName())
                 .mealDate(diary.getMealDate())
-                .mealTime(diary.getCommonCode().getName())
+                .mealTime(diary.getCommonCode().getDescription())
                 .build();
     }
 }
