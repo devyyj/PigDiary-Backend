@@ -1,9 +1,9 @@
 INSERT INTO common_code (category, name, description, created_at, updated_at, deleted)
-VALUES ('식사시간', 1, '아침', sysdate(), sysdate(), false),
-       ('식사시간', 2, '점심', sysdate(), sysdate(), false),
-       ('식사시간', 3, '저녁', sysdate(), sysdate(), false),
-       ('식사시간', 4, '간식', sysdate(), sysdate(), false),
-       ('식사시간', 5, '야식', sysdate(), sysdate(), false);
+VALUES ('식사시간', 0, '아침', sysdate(), sysdate(), false),
+       ('식사시간', 1, '점심', sysdate(), sysdate(), false),
+       ('식사시간', 2, '저녁', sysdate(), sysdate(), false),
+       ('식사시간', 3, '간식', sysdate(), sysdate(), false),
+       ('식사시간', 4, '야식', sysdate(), sysdate(), false);
 
 
 INSERT INTO common_code (category, name, created_at, updated_at, deleted)

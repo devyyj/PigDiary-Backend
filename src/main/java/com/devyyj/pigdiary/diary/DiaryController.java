@@ -31,12 +31,12 @@ public class DiaryController {
     }
     // 생성
     @PostMapping({"", "/"})
-    public ResponseEntity<Long> createPost(Authentication authentication, DiaryRequestDto diaryRequestDto) {
+    public ResponseEntity<Long> createPost(Authentication authentication, @RequestBody DiaryRequestDto diaryRequestDto) {
         return new ResponseEntity<>(diaryService.create(diaryRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
     }
     // 수정
     @PutMapping("/{postNumber}")
-    public ResponseEntity<String> updatePost(Authentication authentication, DiaryRequestDto diaryRequestDto) throws Exception {
+    public ResponseEntity<String> updatePost(Authentication authentication, @RequestBody DiaryRequestDto diaryRequestDto) throws Exception {
         diaryService.update(Long.valueOf(authentication.getPrincipal().toString()), diaryRequestDto);
         return new ResponseEntity<>(diaryRequestDto.getDiaryId() + " post updated.", HttpStatus.OK);
     }
