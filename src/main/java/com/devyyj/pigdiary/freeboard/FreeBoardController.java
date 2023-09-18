@@ -4,6 +4,7 @@ import com.devyyj.pigdiary.freeboard.dto.FreeBoardRequestDto;
 import com.devyyj.pigdiary.freeboard.dto.FreeBoardResponseDto;
 import com.devyyj.pigdiary.common.dto.PageRequestDto;
 import com.devyyj.pigdiary.common.dto.PageResponseDto;
+import com.devyyj.pigdiary.freeboard.entity.FreeBoard;
 import com.devyyj.pigdiary.freeboard.service.FreeBoardServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,8 +22,9 @@ public class FreeBoardController {
     private final FreeBoardServiceImpl freeBoardService;
     // 게시글 목록 조회
     @GetMapping({"", "/"})
-    public ResponseEntity<PageResponseDto> list(PageRequestDto pageRequestDTO) {
-        return new ResponseEntity<>(freeBoardService.getList(pageRequestDTO), HttpStatus.OK);
+    public ResponseEntity<PageResponseDto<FreeBoardResponseDto, FreeBoard>> list(PageRequestDto pageRequestDTO) {
+        PageResponseDto<FreeBoardResponseDto, FreeBoard> responseDto = freeBoardService.getList(pageRequestDTO);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     // 게시글 조회
     @GetMapping("/{postNumber}")
@@ -31,12 +33,12 @@ public class FreeBoardController {
     }
     // 게시글 생성
     @PostMapping({"", "/"})
-    public ResponseEntity<Long> createPost(Authentication authentication, FreeBoardRequestDto boardRequestDto) {
+    public ResponseEntity<Long> createPost(Authentication authentication,@RequestBody FreeBoardRequestDto boardRequestDto) {
         return new ResponseEntity<>(freeBoardService.create(boardRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
     }
     // 게시글 수정
     @PutMapping("/{postNumber}")
-    public ResponseEntity<String> updatePost(Authentication authentication, FreeBoardRequestDto boardRequestDto) throws Exception {
+    public ResponseEntity<String> updatePost(Authentication authentication, @RequestBody FreeBoardRequestDto boardRequestDto) throws Exception {
         freeBoardService.update(Long.valueOf(authentication.getPrincipal().toString()), boardRequestDto);
         return new ResponseEntity<>(boardRequestDto.getPostId() + " post updated.", HttpStatus.OK);
     }
