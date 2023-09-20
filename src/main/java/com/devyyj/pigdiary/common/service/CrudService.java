@@ -5,12 +5,14 @@ import com.devyyj.pigdiary.common.dto.PageResponseDto;
 
 public interface CrudService<RequestDto, ResponseDto, Entity> {
     // 목록
+    PageResponseDto<ResponseDto, Entity> getList(Long userId, PageRequestDto pageRequestDTO);
     PageResponseDto<ResponseDto, Entity> getList(PageRequestDto pageRequestDTO);
 
     // 생성
-    Long create(RequestDto requestDto, Long userId);
+    Long create(Long userId, RequestDto requestDto);
 
     // 내용
+    ResponseDto read(Long userId, Long postId);
     ResponseDto read(Long postId);
 
     // 수정

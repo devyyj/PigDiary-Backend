@@ -26,15 +26,20 @@ public class DiaryServiceImpl implements CrudService<DiaryRequestDto, DiaryRespo
     //todo 동작전 사용자 검증 로직 추가
 
     @Override
-    public PageResponseDto<DiaryResponseDto, Diary> getList(PageRequestDto pageRequestDTO) {
-        Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
-        Page<Diary> result = diaryRepository.findAll(pageable);
+    public PageResponseDto<DiaryResponseDto, Diary> getList(Long userId, PageRequestDto pageRequestDTO) {
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("mealDate").descending());
+        Page<Diary> result = diaryRepository.findAllByUserId(userId, pageable);
         Function<Diary, DiaryResponseDto> fn = (this::entityToDto);
         return new PageResponseDto<>(result, fn);
     }
 
     @Override
-    public Long create(DiaryRequestDto diaryRequestDto, Long userId) {
+    public PageResponseDto<DiaryResponseDto, Diary> getList(PageRequestDto pageRequestDTO) {
+        return null;
+    }
+
+    @Override
+    public Long create(Long userId, DiaryRequestDto diaryRequestDto) {
         Diary entity = dtoToEntity(diaryRequestDto);
         entity.setUser(MyUser.builder().id(userId).build());
         diaryRepository.save(entity);
@@ -42,9 +47,14 @@ public class DiaryServiceImpl implements CrudService<DiaryRequestDto, DiaryRespo
     }
 
     @Override
-    public DiaryResponseDto read(Long postId) {
-        Optional<Diary> diary = diaryRepository.findById(postId);
+    public DiaryResponseDto read(Long userId, Long postId) {
+        Optional<Diary> diary = diaryRepository.findByIdAndUserId(postId, userId);
         return diary.map(this::entityToDto).orElseThrow();
+    }
+
+    @Override
+    public DiaryResponseDto read(Long postId) {
+        return null;
     }
 
     @Override
@@ -79,6 +89,7 @@ public class DiaryServiceImpl implements CrudService<DiaryRequestDto, DiaryRespo
     @Override
     public DiaryResponseDto entityToDto(Diary diary) {
         return DiaryResponseDto.builder()
+                .id(diary.getId())
                 .foodName(diary.getFoodName())
                 .mealDate(diary.getMealDate())
                 .mealTime(diary.getCommonCode().getDescription())

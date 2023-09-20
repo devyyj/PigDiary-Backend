@@ -21,18 +21,18 @@ public class DiaryController {
     private final DiaryServiceImpl diaryService;
     // 목록 조회
     @GetMapping({"", "/"})
-    public ResponseEntity<PageResponseDto> list(PageRequestDto pageRequestDTO) {
-        return new ResponseEntity<>(diaryService.getList(pageRequestDTO), HttpStatus.OK);
+    public ResponseEntity<PageResponseDto> list(Authentication authentication, PageRequestDto pageRequestDTO) {
+        return new ResponseEntity<>(diaryService.getList(Long.valueOf(authentication.getPrincipal().toString()), pageRequestDTO), HttpStatus.OK);
     }
     // 조회
     @GetMapping("/{postNumber}")
-    public ResponseEntity<DiaryResponseDto> readPost(@PathVariable Long postNumber) {
-        return new ResponseEntity<>(diaryService.read(postNumber), HttpStatus.OK);
+    public ResponseEntity<DiaryResponseDto> readPost(Authentication authentication, @PathVariable Long postNumber) {
+        return new ResponseEntity<>(diaryService.read(Long.valueOf(authentication.getPrincipal().toString()),postNumber), HttpStatus.OK);
     }
     // 생성
     @PostMapping({"", "/"})
     public ResponseEntity<Long> createPost(Authentication authentication, @RequestBody DiaryRequestDto diaryRequestDto) {
-        return new ResponseEntity<>(diaryService.create(diaryRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
+        return new ResponseEntity<>(diaryService.create(Long.valueOf(authentication.getPrincipal().toString()), diaryRequestDto), HttpStatus.OK);
     }
     // 수정
     @PutMapping("/{postNumber}")

@@ -34,7 +34,7 @@ public class FreeBoardController {
     // 게시글 생성
     @PostMapping({"", "/"})
     public ResponseEntity<Long> createPost(Authentication authentication,@RequestBody FreeBoardRequestDto boardRequestDto) {
-        return new ResponseEntity<>(freeBoardService.create(boardRequestDto, Long.valueOf(authentication.getPrincipal().toString())), HttpStatus.OK);
+        return new ResponseEntity<>(freeBoardService.create(Long.valueOf(authentication.getPrincipal().toString()), boardRequestDto), HttpStatus.OK);
     }
     // 게시글 수정
     @PutMapping("/{postNumber}")

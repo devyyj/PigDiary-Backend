@@ -28,6 +28,11 @@ public class FreeBoardServiceImpl implements CrudService<FreeBoardRequestDto, Fr
     private final CommonServiceImpl commonService;
 
     @Override
+    public PageResponseDto<FreeBoardResponseDto, FreeBoard> getList(Long userId, PageRequestDto pageRequestDTO) {
+        return null;
+    }
+
+    @Override
     public PageResponseDto<FreeBoardResponseDto, FreeBoard> getList(PageRequestDto pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
         Page<FreeBoard> result = freeBoardRepository.findAll(pageable);
@@ -36,11 +41,16 @@ public class FreeBoardServiceImpl implements CrudService<FreeBoardRequestDto, Fr
     }
 
     @Override
-    public Long create(FreeBoardRequestDto boardRequestDto, Long userId) {
+    public Long create(Long userId, FreeBoardRequestDto boardRequestDto) {
         FreeBoard entity = dtoToEntity(boardRequestDto);
         entity.setUser(MyUser.builder().id(userId).build());
         freeBoardRepository.save(entity);
         return entity.getId();
+    }
+
+    @Override
+    public FreeBoardResponseDto read(Long userId, Long postId) {
+        return null;
     }
 
     @Override

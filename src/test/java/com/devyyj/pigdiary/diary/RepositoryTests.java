@@ -28,7 +28,7 @@ public class RepositoryTests {
             dto.setFoodName("김치찌개" + i);
             dto.setMealDate(LocalDate.of(2023, 9, 12));
             dto.setMealTime(String.valueOf(randomNumber));
-            diaryService.create(dto, 1L);
+            diaryService.create(1L, dto);
         }
     }
 
