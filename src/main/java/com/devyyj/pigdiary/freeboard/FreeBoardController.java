@@ -37,7 +37,7 @@ public class FreeBoardController {
         return new ResponseEntity<>(freeBoardService.create(Long.valueOf(authentication.getPrincipal().toString()), boardRequestDto), HttpStatus.OK);
     }
     // 게시글 수정
-    @PutMapping("/{postNumber}")
+    @PutMapping({"", "/"})
     public ResponseEntity<String> updatePost(Authentication authentication, @RequestBody FreeBoardRequestDto boardRequestDto) throws Exception {
         freeBoardService.update(Long.valueOf(authentication.getPrincipal().toString()), boardRequestDto);
         return new ResponseEntity<>(boardRequestDto.getPostId() + " post updated.", HttpStatus.OK);

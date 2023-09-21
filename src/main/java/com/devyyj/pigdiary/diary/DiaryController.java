@@ -35,7 +35,7 @@ public class DiaryController {
         return new ResponseEntity<>(diaryService.create(Long.valueOf(authentication.getPrincipal().toString()), diaryRequestDto), HttpStatus.OK);
     }
     // 수정
-    @PutMapping("/{postNumber}")
+    @PutMapping({"", "/"})
     public ResponseEntity<String> updatePost(Authentication authentication, @RequestBody DiaryRequestDto diaryRequestDto) throws Exception {
         diaryService.update(Long.valueOf(authentication.getPrincipal().toString()), diaryRequestDto);
         return new ResponseEntity<>(diaryRequestDto.getDiaryId() + " post updated.", HttpStatus.OK);

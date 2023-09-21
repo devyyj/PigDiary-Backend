@@ -27,7 +27,7 @@ public class DiaryServiceImpl implements CrudService<DiaryRequestDto, DiaryRespo
 
     @Override
     public PageResponseDto<DiaryResponseDto, Diary> getList(Long userId, PageRequestDto pageRequestDTO) {
-        Pageable pageable = pageRequestDTO.getPageable(Sort.by("mealDate").descending());
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by(Sort.Order.desc("mealDate"), Sort.Order.desc("id")));
         Page<Diary> result = diaryRepository.findAllByUserId(userId, pageable);
         Function<Diary, DiaryResponseDto> fn = (this::entityToDto);
         return new PageResponseDto<>(result, fn);
