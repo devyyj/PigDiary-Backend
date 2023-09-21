@@ -1,14 +1,8 @@
 package com.devyyj.pigdiary.freeboard.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class FreeBoardRequestDto {
     private Long postId;
     private String title;

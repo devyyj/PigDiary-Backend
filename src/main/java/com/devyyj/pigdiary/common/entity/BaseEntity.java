@@ -2,11 +2,10 @@ package com.devyyj.pigdiary.common.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,7 +17,6 @@ import java.util.Date;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Where(clause = "deleted = false")
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +32,7 @@ public abstract class BaseEntity {
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
 
+    @Builder.Default
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
@@ -41,7 +40,7 @@ public abstract class BaseEntity {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
-    public void markAsDeleted() {
+    public void setDeleted() {
         deleted = true;
         deletedAt = new Date();
     }

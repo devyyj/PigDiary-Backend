@@ -7,6 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
-    @Query("SELECT f, u.nickName FROM FreeBoard f LEFT JOIN f.user u  ON f.userId = u.id WHERE f.deleted = false")
-    Page<Object[]> findAllData(Pageable pageable);
 }
